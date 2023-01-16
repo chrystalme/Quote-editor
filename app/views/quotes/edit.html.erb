@@ -1,0 +1,8 @@
+<main class="container">
+<%= link_to sanitize("&larr; Back to quotes"), quote_path(@quote) %>
+  <div class="heaader">
+    <h1>Edit quote</h1>
+  </div>
+
+  <%= render 'form',qute: @quote %>
+</main>
