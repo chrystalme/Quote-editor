@@ -3,6 +3,7 @@
   <div class="heaader">
     <h1>Edit quote</h1>
   </div>
-
+<%= turbo_frame_tag @quote do%>
   <%= render 'form',qute: @quote %>
+<% end %>
 </main>

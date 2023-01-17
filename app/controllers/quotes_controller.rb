@@ -4,7 +4,7 @@ class QuotesController < ApplicationController
   before_action :set_quote, only: %w[edit update destroy show]
 
   def index
-    @quotes = Quote.all
+    @quotes = Quote.ordered
   end
 
   def new
@@ -17,7 +17,10 @@ class QuotesController < ApplicationController
     @quote = Quote.new(quote_params)
 
     if @quote.save
-      redirect_to quotes_path, notice: 'Quote was created successfully'
+      respond_to do |format|
+        format.html {redirect_to quotes_path, notice: 'Quote was created successfully'}
+        format.turbo_stream
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,7 +38,10 @@ class QuotesController < ApplicationController
 
   def destroy
     @quote.destroy
-    redirect_to quotes_path, notice: 'Quote was deleted successfully'
+    respond_to do |format|
+      format.html {redirect_to quotes_path, notice: 'Quote was deleted successfully'}
+      format.turbo_stream
+    end
   end
 
   private
