@@ -3,7 +3,7 @@
 # Quote class
 class Quote < ApplicationRecord
   belongs_to :company
-  
+
   validates :name, presence: true
 
   scope :ordered, -> { order(id: :desc) }
@@ -18,5 +18,5 @@ class Quote < ApplicationRecord
   # after_destroy_commit -> { broadcast_remove_to 'quotes' }
 
   # Using ruby's synctactic sugar
-  broadcasts_to ->(_quote) { 'quotes' }, inserts_by: :prepend
+  broadcasts_to ->(quote) { [quote.company, 'quotes'] }, inserts_by: :prepend
 end
