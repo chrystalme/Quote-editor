@@ -4,17 +4,18 @@ require 'application_system_test_case'
 
 class QuotesTest < ApplicationSystemTestCase
   setup do
-    @quote = quotes(:first)
+    login_as users(:accountant)
+    @quote = Quote.ordered.first
   end
 
   test 'Creating a new quote' do
     visit quotes_path
-    assert_selector 'hi', text: 'Quotes'
+    assert_selector 'h1', text: 'Quotes'
 
     click_on 'New quote'
-    assert_selector 'h1', text: 'New quote'
+    fill_in 'name', with: 'My first quote'
 
-    fill_in 'Name', with: 'My first quote'
+    assert_selector 'h1', text: 'Quotes'
     click_on 'Create quote'
 
     assert_selector 'h1', text: 'Quotes'
@@ -23,9 +24,9 @@ class QuotesTest < ApplicationSystemTestCase
 
   test 'Showing a quote' do
     visit quotes_path
-    click_link @quote.Name
+    click_link @quote.name
 
-    assert_selector 'h1', text: @quote.name
+    assert_text @quote.name
   end
 
   test 'Updating a quote' do
@@ -33,9 +34,9 @@ class QuotesTest < ApplicationSystemTestCase
     assert_selector 'h1', text: 'Quotes'
 
     click_on 'Edit', match: :first
-    assert_selector 'h1', text: 'Edit quotes'
-
-    fill_in 'Name', with: 'Updated quote'
+    fill_in 'name', with: 'Updated quote'
+    
+    assert_selector 'h1', text: 'Quotes'
     click_on 'Update quote'
 
     assert_selector 'h1', text: 'Quotes'
@@ -46,7 +47,7 @@ class QuotesTest < ApplicationSystemTestCase
     visit quotes_path
     assert_text @quote.name
 
-    click_on 'Delete', match: first
+    click_on 'Delete', match: :first
     assert_no_text @quote.name
   end
 end
